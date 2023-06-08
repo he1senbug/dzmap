@@ -4,17 +4,21 @@
     </head>
     <body>
         <script>
-            const showStatus = () => {
+            fetch('https://worldtimeapi.org/api/timezone/Etc/UTC').then(r => r.json()).then(d => {
                 const maps = ['Blacksite', 'Vineyard', 'Sirocco', 'Ember'];
-                const start = 1686098162000;
-                const current = (Date.now() - start) % 720000;
-                const mapIndex = Math.floor(current / 180000);
-                const time = Math.ceil((180000 - current % 180000) / 1000);
+                const start = 1686098160 + (Math.floor(Date.now() / 1000) - d.unixtime);
+                const showStatus = () => {
+                    const current = (Math.floor(Date.now() / 1000) - start) % 720;
+                    const mapIndex = Math.floor(current / 180);
+                    const time = Math.ceil(180 - current % 180);
 
-                document.body.innerText = `Current map is ${maps[mapIndex]}, next map is ${mapIndex === maps.length - 1 ? maps[0] : maps[mapIndex + 1]} in ${time} secconds`;
-            };
-            showStatus();
-            setInterval(showStatus, 1000);
+                    document.body.innerText = `Current map is ${maps[mapIndex]}, next map is ${mapIndex === maps.length - 1 ? maps[0] : maps[mapIndex + 1]} in ${time} secconds`;
+                };
+                showStatus();
+                setInterval(showStatus, 1000);
+            }).catch(function(e) {
+                document.body.innerText = e;
+            });
         </script>
     </body>
 </html>
