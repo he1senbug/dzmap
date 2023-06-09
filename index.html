@@ -25,7 +25,7 @@
           const current = (Math.floor(Date.now() / 1000) - start) % (mapDuration * 4);
           const mapIndex = Math.floor(current / mapDuration);
           const time = Math.ceil(mapDuration - current % mapDuration);
-          const timeFormatted = `${Math.floor(time / 60}:${time % 60}`;
+          const timeFormatted = `${Math.floor(time / 60)}:${time % 60}`;
           
           img.src = maps[mapIndex].toLowerCase() + '.webp';
           text.innerHTML = `<p>current map is ${maps[mapIndex]}</p><p>next map is ${mapIndex === maps.length - 1 ? maps[0] : maps[mapIndex + 1]} in ${timeFormatted}</p>`;
