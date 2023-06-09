@@ -1,24 +1,35 @@
 <html>
-    <head>
-        <title>DZ Map</title>
-    </head>
-    <body>
-        <script>
-            fetch('https://worldtimeapi.org/api/timezone/Etc/UTC').then(r => r.json()).then(d => {
-                const maps = ['Blacksite', 'Vineyard', 'Sirocco', 'Ember'];
-                const start = 1686098160 + (Math.floor(Date.now() / 1000) - d.unixtime);
-                const showStatus = () => {
-                    const current = (Math.floor(Date.now() / 1000) - start) % 720;
-                    const mapIndex = Math.floor(current / 180);
-                    const time = Math.ceil(180 - current % 180);
-
-                    document.body.innerText = `Current map is ${maps[mapIndex]}, next map is ${mapIndex === maps.length - 1 ? maps[0] : maps[mapIndex + 1]} in ${time} secconds`;
-                };
-                showStatus();
-                setInterval(showStatus, 1000);
-            }).catch(function(e) {
-                document.body.innerText = e;
-            });
-        </script>
-    </body>
+  <head>
+    <title>DZ Map</title>
+  </head>
+  <body style="background-color: #262626;">
+    <img id="img" src="" style="display: block;margin-left: auto;margin-right: auto;">
+    <div id="text" style="
+        font-size: 33pt;
+        text-align: center;
+        color: #efe0c0;
+        font-weight: bold;
+        font-family: monospace;
+    "></div>
+    <script>
+      const text = document.getElementById('text');
+      const img = document.getElementById('img');
+        
+      fetch('https://worldtimeapi.org/api/timezone/Etc/UTC').then(r => r.json()).then(d => {
+        const maps = ['Blacksite', 'Vineyard', 'Sirocco', 'Ember'];
+        const start = 1686098160 + (Math.floor(Date.now() / 1000) - d.unixtime);
+        const showStatus = () => {
+          const current = (Math.floor(Date.now() / 1000) - start) % 720;
+          const mapIndex = Math.floor(current / 180);
+          const time = Math.ceil(180 - current % 180);
+          img.src = maps[mapIndex].toLowerCase() + '.webp';
+          text.innerHTML = `<p>current map is ${maps[mapIndex]}</p><p>next map is ${mapIndex === maps.length - 1 ? maps[0] : maps[mapIndex + 1]} in ${time} seconds</p>`;
+        };
+        showStatus();
+        setInterval(showStatus, 1000);
+      }).catch(function(e) {
+        document.body.innerText = e;
+      });
+    </script>
+  </body>
 </html>
